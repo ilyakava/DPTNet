@@ -159,10 +159,10 @@ class DPT_base(nn.Module):
 
         rest = segment_size - (segment_stride + seq_len % segment_size) % segment_size
         if rest > 0:
-            pad = Variable(torch.zeros(batch_size, dim, rest, dtype=input.dtype)).to(input.device)
+            pad = Variable(torch.zeros(batch_size, dim, rest)).to(input.device)
             input = torch.cat([input, pad], 2)
 
-        pad_aux = Variable(torch.zeros(batch_size, dim, segment_stride, dtype=input.dtype)).to(input.device)
+        pad_aux = Variable(torch.zeros(batch_size, dim, segment_stride)).to(input.device)
         input = torch.cat([pad_aux, input, pad_aux], 2)
 
         return input, rest
@@ -273,9 +273,9 @@ class DPTNet_base(nn.Module):
         # pad the signals at the end for matching the window/stride size
         rest = window - (stride + nsample % window) % window
         if rest > 0:
-            pad = torch.zeros(batch_size, rest, dtype=input.dtype).to(input.device)
+            pad = torch.zeros(batch_size, rest).to(input.device)
             input = torch.cat([input, pad], 1)
-        pad_aux = torch.zeros(batch_size, stride, dtype=input.dtype).to(input.device)
+        pad_aux = torch.zeros(batch_size, stride).to(input.device)
         input = torch.cat([pad_aux, input, pad_aux], 1)
 
         return input, rest
