@@ -28,6 +28,7 @@ import torch.utils.data as data
 
 import librosa
 
+
 class AudioDataset(data.Dataset):
 
     def __init__(self, json_dir, batch_size, sample_rate=8000, segment=4.0, cv_maxlen=8.0):
@@ -161,6 +162,20 @@ def _collate_fn(batch):
     #print('mixtures_pad.shape {}'.format(mixtures_pad.shape))
     #print('ilens {}'.format(ilens))
     return mixtures_pad, ilens, sources_pad
+
+# Dummy data
+class DummyDataset(AudioDataset):
+    def __init__(self, data_len=17000, sample_rate=8000, segment=4.0, cv_maxlen=8.0):
+        segment_len = int(segment * data_len)
+        self.minibatch = [segment_len] * 17000
+        
+class DummyDataLoader(data.DataLoader):
+    def __init__(self, *args, **kwargs):
+        super(DummyDataLoader, self).__init__(*args, **kwargs)
+        self.collate_fn = _dummy_collate_fn
+            
+def _dummy_collate_fn(batch):
+    return torch.rand((2,32000)), torch.tensor([32000,32000]), torch.rand((2,2,32000))
 
 # Eval data part
 from others.preprocess import preprocess_one_dir
