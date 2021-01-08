@@ -159,10 +159,10 @@ class DPT_base(nn.Module):
 
         rest = segment_size - (segment_stride + seq_len % segment_size) % segment_size
         if rest > 0:
-            pad = Variable(torch.zeros(batch_size, dim, rest)).type(input.type())
+            pad = Variable(torch.zeros(batch_size, dim, rest, device=input.device, dtype=input.dtype))
             input = torch.cat([input, pad], 2)
 
-        pad_aux = Variable(torch.zeros(batch_size, dim, segment_stride)).type(input.type())
+        pad_aux = Variable(torch.zeros(batch_size, dim, segment_stride, device=input.device, dtype=input.dtype))
         input = torch.cat([pad_aux, input, pad_aux], 2)
 
         return input, rest
@@ -218,6 +218,7 @@ class BF_module(DPT_base):
         # input: (B, E, T)
         batch_size, E, seq_length = input.shape
 
+        
         enc_feature = self.BN(input) # (B, E, L)-->(B, N, L)
         # split the encoder output into overlapped, longer segments
         enc_segments, enc_rest = self.split_feature(enc_feature, self.segment_size)  # B, N, L, K: L is the segment_size
@@ -272,9 +273,9 @@ class DPTNet_base(nn.Module):
         # pad the signals at the end for matching the window/stride size
         rest = window - (stride + nsample % window) % window
         if rest > 0:
-            pad = torch.zeros(batch_size, rest).type(input.type())
+            pad = torch.zeros(batch_size, rest, device=input.device, dtype=input.dtype)
             input = torch.cat([input, pad], 1)
-        pad_aux = torch.zeros(batch_size, stride).type(input.type())
+        pad_aux = torch.zeros(batch_size, stride, device=input.device, dtype=input.dtype)
         input = torch.cat([pad_aux, input, pad_aux], 1)
 
         return input, rest
@@ -289,6 +290,7 @@ class DPTNet_base(nn.Module):
         # mixture, rest = self.pad_input(input, self.window)
         #print('mixture.shape {}'.format(mixture.shape))
         mixture_w = self.encoder(input)  # B, E, L
+        
 
         score_ = self.enc_LN(mixture_w) # B, E, L
         #print('mixture_w.shape {}'.format(mixture_w.shape))
