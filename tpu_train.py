@@ -54,17 +54,19 @@ def main():
             mixture_lengths = mixture_lengths.to(device)
             padded_source = padded_source.to(device)
     
+        logger.info('Got data')
         estimate_source = model(padded_mixture)
-    
+        logger.info('Got output')
         loss, max_snr, estimate_source, reorder_estimate_source = \
             cal_loss(padded_source, estimate_source, mixture_lengths)
+        logger.info('Got loss')
         if True:
     
             optimizer.zero_grad()
             loss.backward()
             #torch.nn.utils.clip_grad_norm_(model.parameters(), 5)
             xm.optimizer_step(optimizer)
-            tracker.add(FLAGS.batch_size)
+            tracker.add(1)
             
         if i % 100 == 0:
             logger.info('Epoch {0} | Iter {1} | Average Loss {2:.3f} | '
