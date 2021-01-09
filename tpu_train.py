@@ -71,7 +71,9 @@ def main():
                 epoch + 1, i + 1, total_loss / (i + 1),
                 loss.item(), tracker.rate(),
                 tracker.global_rate(),
-                flush=True)
+                flush=True))
+    
+    logger.info('Done')
 
 
 if __name__ == '__main__':
