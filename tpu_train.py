@@ -42,7 +42,9 @@ def main():
     epoch = 0
     total_loss = 0
     start = time.time()
+    model.train()
     logger.info('Starting train')
+    
     for i, (data) in enumerate(tr_loader):
         padded_mixture_, mixture_lengths_, padded_source_ = data
         seg_idx = numpy.random.randint(0, padded_mixture_.shape[0], 1)
