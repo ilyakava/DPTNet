@@ -96,19 +96,19 @@ def main(args):
     logger.info(args)
     
     # data
-    # tr_dataset = AudioDataset(args.train_dir, batch_size=1,
-    #                           sample_rate=args.sample_rate, segment=args.segment)
-    # cv_dataset = AudioDataset(args.valid_dir, batch_size=args.batch_size,
-    #                           sample_rate=args.sample_rate,
-    #                           segment=-1, cv_maxlen=args.cv_maxlen)
-    # tr_loader = AudioDataLoader(tr_dataset, batch_size=1,
-    #                             shuffle=args.shuffle)
-    # cv_loader = AudioDataLoader(cv_dataset, batch_size=1, shuffle=False)
-    tr_dataset = DummyDataset(sample_rate=args.sample_rate, segment=args.segment)
-    cv_dataset = DummyDataset(data_len=5000, sample_rate=args.sample_rate)
-    tr_loader = DummyDataLoader(tr_dataset, batch_size=1,
+    tr_dataset = AudioDataset(args.train_dir, batch_size=1,
+                              sample_rate=args.sample_rate, segment=args.segment)
+    cv_dataset = AudioDataset(args.valid_dir, batch_size=args.batch_size,
+                              sample_rate=args.sample_rate,
+                              segment=-1, cv_maxlen=args.cv_maxlen)
+    tr_loader = AudioDataLoader(tr_dataset, batch_size=1,
                                 shuffle=args.shuffle)
     cv_loader = AudioDataLoader(cv_dataset, batch_size=1, shuffle=False)
+    # tr_dataset = DummyDataset(sample_rate=args.sample_rate, segment=args.segment)
+    # cv_dataset = DummyDataset(data_len=5000, sample_rate=args.sample_rate)
+    # tr_loader = DummyDataLoader(tr_dataset, batch_size=1,
+    #                             shuffle=args.shuffle)
+    # cv_loader = AudioDataLoader(cv_dataset, batch_size=1, shuffle=False)
     data = {'tr_loader': tr_loader, 'cv_loader': cv_loader}
     
     model = DPTNet_base(enc_dim=args.E, feature_dim=args.N, hidden_dim=args.H, layer=args.D, segment_size=args.K, nspk=2, win_len=args.W)
