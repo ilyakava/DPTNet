@@ -54,3 +54,20 @@ CUDA_VISIBLE_DEVICES=1 python train_and_eval.py --mode eval --continue_from exp/
 Working in pytorch 1.8, cuda 11.1.
 Default training model is working on a gpu with 16+ GB of memory.
 Faster-training model is working on a gpu with only 2.5 GB of memory.
+
+
+### TPU
+
+MXU units are at 0% util. Runs much slower than GPU.
+Clear problem is batch size of 1, and v3-8 has 8 cores, so using 1 of 8 seems pointless. See [here](https://cloud.google.com/tpu/docs/tpus#replicas).
+
+To start experiment:
+Go to [gcloud](https://console.cloud.google.com/).
+Follow this [tutorial](https://cloud.google.com/tpu/docs/tutorials/roberta-pytorch)
+
+
+
+```
+pip install librosa
+sudo apt-get install libsndfile1
+```
