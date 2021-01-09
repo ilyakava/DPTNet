@@ -5,6 +5,7 @@ import logging
 
 import torch_xla
 import torch_xla.core.xla_model as xm
+import torch.optim as optim
 
 from models import DPTNet_base
 from others.data import DummyDataset, DummyDataLoader
