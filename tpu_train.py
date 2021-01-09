@@ -31,7 +31,7 @@ def main():
     data = {'tr_loader': tr_loader, 'cv_loader': cv_loader}
     logger.info('Data ready')
     
-    model = DPTNet_base(enc_dim=256, feature_dim=64, hidden_dim=128, layer=6, segment_size=256, nspk=2, win_len=2)
+    model = DPTNet_base(enc_dim=64, feature_dim=64, hidden_dim=128, layer=2, segment_size=256, nspk=2, win_len=16)
     model = model.to(device)
     logger.info('Model on device')
     
